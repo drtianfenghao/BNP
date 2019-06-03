@@ -3,6 +3,10 @@ Junction-Tree-Based Algorithm for Reasoning in Bayesian Network for Ecological R
 
 =======================================================================================================
 Manual for user
+
+
+
+
 *************************************1*************************************
 Highlights
 
