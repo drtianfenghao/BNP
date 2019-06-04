@@ -6,7 +6,7 @@
 ##Date: December 2,2018
 ##Note:
 #1、This file is order to create a Bayesian Network(BN) model with Pgmpy(https://github.com/pgmpy) and get a directed acyclic graph(DAG) for junction tree algorithm.
-#2、We have modified the source code according to the requirements of our research. You can download the source code in my GitHub site(https://github.com/drtianfenghao/drtian);
+#2、We have modified the source code according to the requirements of our research. You can download the source code in my GitHub site(https://github.com/drtianfenghao/BNP).
 
 import arcpy
 from bayesian.bbn import *
