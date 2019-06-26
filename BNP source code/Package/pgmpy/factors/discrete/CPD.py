@@ -231,7 +231,7 @@ class TabularCPD(DiscreteFactor):
         #
         values = self.get_values().tolist()
         # arcpy.AddMessage('values:' + str(values))
-        if formatvar == 'DRW' or formatvar == 'DT' or formatvar == 'DRD' or formatvar == 'G' or formatvar == 'DW'  or formatvar == 'A'  or formatvar == 'R'  or formatvar == 'IW'  or formatvar == 'DNR'or formatvar == 'F':
+        if formatvar == 'DRW' or formatvar == 'DT' or formatvar == 'DRD' or formatvar == 'G' or formatvar == 'DW'  or formatvar == 'A'  or formatvar == 'R'  or formatvar == 'IW'  or formatvar == 'DNR'or formatvar == 'F' or formatvar == 'SD':
             lst_values = []
             arcpy.AddMessage('if:'+str(values))
             for i in range(len(values)):
@@ -239,8 +239,9 @@ class TabularCPD(DiscreteFactor):
                     lst_values.append(values[i][j])
             for i in range(len(lst_values)):
                 self.dic[key[0][i]] = lst_values[i]
-
+          
         else:
+            
             newvalues = []
             cnt = len(values)
             arcpy.AddMessage('else:' + str(cnt))
@@ -254,8 +255,12 @@ class TabularCPD(DiscreteFactor):
 
             for i in range(len(key)):
                 if len(key) == len(newvalues):
+                    print "zhe if"
+                    # print newvalues
                     table[key[i]] = newvalues[i]
                 else:
+                    print "zhe else"
+
                     table[key[i]] = values[0][0]
 
             self.dic[variable_array[0][0][:-3]] = table
