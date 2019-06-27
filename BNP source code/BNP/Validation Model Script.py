@@ -24,6 +24,8 @@ def printRoc(y_test, scores,group):
     '''
     fpr, tpr, thresholds = metrics.roc_curve(y_test, scores, pos_label=2)
     roc_auc = auc(fpr, tpr)
+   
+
     plt.plot(fpr, tpr, lw=5, alpha=0.8, color='r', label='AUC = %0.2f' % (roc_auc))
     plt.plot([0, 1], [0, 1], linestyle='--', lw=2, color='r', alpha=.8)#label='Luck'
 

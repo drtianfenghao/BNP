@@ -255,12 +255,8 @@ class TabularCPD(DiscreteFactor):
 
             for i in range(len(key)):
                 if len(key) == len(newvalues):
-                    print "zhe if"
-                    # print newvalues
                     table[key[i]] = newvalues[i]
                 else:
-                    print "zhe else"
-
                     table[key[i]] = values[0][0]
 
             self.dic[variable_array[0][0][:-3]] = table

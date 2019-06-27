@@ -38,48 +38,78 @@ class BNI:
         BN = BN_CreateFactors(dic)
         g = BN.addNodes()
         return g
-    def get_JTP_data(self,g,dic):
+    def set_JTP_data(self,g,VerificationFeature):
         '''
         Return the inference results.
         :param g: The junction tree model.
-        :param dic: The data of DAG.
-        '''
-        lst_JTP = []
-        cnt = len(dic['A'])
-
-        for i in xrange(cnt):
-            joint_probability = g.query(A=dic['A'][i], G=dic['G'][i],
-                                        DNR=dic['DNR'][i], R=dic['R'][i],
-                                        DRD=dic['DRD'][i], DRW=dic['DRW'][i],
-                                                    DT=dic['DT'][i], DW=dic['DW'][i], ES=dic['ES'][i], FO=dic['FO'][i], IE=dic['IE'][i], IW=dic['IW'][i],
-                                                    UE=dic['UE'][i], LOP=dic['LOP'][i])
-            data1 = joint_probability[('ELP', 1)]
-            data2 = joint_probability[('ELP', 2)]
-
-            if data1 == data2:
-                lst_JTP.append(1)
-            elif data1 > data2:
-                lst_JTP.append(1)
-            elif data1 < data2:
-                lst_JTP.append(2)
-
-        return lst_JTP
-
-    def set_JTP_data(self, lst,VerificationFeature):
-        '''
-        Updating the field of random points with JTP value.
-        :param lst: List of the inference results.
         :param VerificationFeature: Verification feature.
         '''
-        arcpy.AddMessage('set_JTP_data....')
-        n = 0
-        with arcpy.da.UpdateCursor(VerificationFeature, ['JTP']) as cursor:
+        num = 1
+        fields = arcpy.ListFields(VerificationFeature)
+        lstfield = []
+        scores = []
+        for i in fields:
+            lstfield.append(i.name)
+        with arcpy.da.UpdateCursor(VerificationFeature, lstfield) as cursor:
             for row in cursor:
-                data = lst[n]
-                arcpy.AddMessage('setting data :'+str(n))
-                n += 1
-                row[0] = data
+
+                valueA = row[lstfield.index('A')]
+                valueG = row[lstfield.index('G')]
+                valueDNR = row[lstfield.index('DNR')]
+                valueR = row[lstfield.index('R')]
+                valueDRD = row[lstfield.index('DRD')]
+                valueDRW = row[lstfield.index('DRW')]
+                valueDT = row[lstfield.index('DT')]
+                valueDW = row[lstfield.index('DW')]
+                valueES = row[lstfield.index('ES')]
+                valueC = row[lstfield.index('C')]
+                valueIE = row[lstfield.index('IE')]
+                valueIW = row[lstfield.index('IW')]
+                valueLC = row[lstfield.index('LC')]
+                valueSD = row[lstfield.index('SD')]
+                valueELP = row[lstfield.index('ELP')]
+                # scores.append(valueELP)
+                # value_DRW * value_DT * value_DRD * value_R * value_ES * value_A * value_SD * value_DW * value_G * value_C * value_IE * value_IW * value_DNR * value_LC * value_ELP
+                # BNP = self.return_BN_P(valueDRW , valueDT , valueDRD , valueR , valueES , valueA , valueSD , valueDW , valueG , valueC , valueIE , valueIW , valueDNR , valueLC , valueELP)
+                # set BNP
+                # row[lstfield.index('BNP')] = BNP
+
+                # set JTP
+                joint_probability = g.query(A=valueA, G=valueG, DNR=valueDNR, R=valueR, DRD=valueDRD, DRW=valueDRW,
+                                            DT=valueDT, DW=valueDW, ES=valueES, C=valueC, IE=valueIE, IW=valueIW,
+                                            LC=valueLC, SD=valueSD)
+
+                data1 = joint_probability[('ELP', 1)]
+                data2 = joint_probability[('ELP', 2)]
+
+                if data1 == data2:
+                    row[lstfield.index('JTP')] = 1
+                elif data1 > data2:
+                    row[lstfield.index('JTP')] = 1
+                elif data1 < data2:
+                    row[lstfield.index('JTP')] = 2
+
                 cursor.updateRow(row)
+                # arcpy.AddMessage(str(BNP))
+                arcpy.AddMessage("Setting data %s in process"%str(num))
+
+                num += 1
+
+    # def set_JTP_data(self, lst,VerificationFeature):
+    #     '''
+    #     Updating the field of random points with JTP value.
+    #     :param lst: List of the inference results.
+    #     :param VerificationFeature: Verification feature.
+    #     '''
+    #     arcpy.AddMessage('set_JTP_data....')
+    #     n = 0
+    #     with arcpy.da.UpdateCursor(VerificationFeature, ['JTP']) as cursor:
+    #         for row in cursor:
+    #             data = lst[n]
+    #             arcpy.AddMessage('setting data :'+str(n))
+    #             n += 1
+    #             row[0] = data
+    #             cursor.updateRow(row)
 
 
     def checkfield(self, VerificationFeature):
@@ -100,6 +130,7 @@ class BNI:
 
 
 if __name__ == "__main__":
+
     path = arcpy.GetParameterAsText(0)
     VerificationFeature = arcpy.GetParameterAsText(1)
 
@@ -109,10 +140,9 @@ if __name__ == "__main__":
 
 
     if OBNI.checkfield(VerificationFeature) is True:
-        lst = OBNI.get_JTP_data(g,dic)
-        OBNI.set_JTP_data(lst,VerificationFeature)
+        OBNI.set_JTP_data(g,VerificationFeature)
+
     else:
         arcpy.AddField_management(VerificationFeature, 'JTP', 'Float')
-        lst = OBNI.get_JTP_data(g, dic)
-        OBNI.set_JTP_data(lst, VerificationFeature)
+        OBNI.set_JTP_data(g, VerificationFeature)
 

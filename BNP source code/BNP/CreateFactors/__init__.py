@@ -56,7 +56,17 @@ class BN_CreateFactors:
                 return dicR['R(3)']
             elif R == 4:
                 return dicR['R(4)']
-
+        def fSD(SD):
+            '''SD'''
+            dicSD = self.dic['SD']
+            if SD == 1:
+                return dicSD['SD(1)']
+            elif SD == 2:
+                return dicSD['SD(2)']
+            elif SD == 3:
+                return dicSD['SD(3)']
+            elif SD == 4:
+                return dicSD['SD(4)']
         def fIW(IW):
             '''Importance of water conservation'''
             dicIW = self.dic['IW']
@@ -117,33 +127,9 @@ class BN_CreateFactors:
             elif DRD == 4:
                 return dicDRD['DRD(4)']
 
-        def fFO(G, DW, FO):
-            '''Farmland occupancy'''
-            table = self.dic['FO']['FO']
-            key = ''
-            if FO == 1:
-                key = key + 'FO(1)'
-            elif FO == 2:
-                key = key + 'FO(2)'
-            if DW == 1:
-                key = key + 'DW(1)'
-            elif DW == 2:
-                key = key + 'DW(2)'
-            elif DW == 3:
-                key = key + 'DW(3)'
-            elif DW == 4:
-                key = key + 'DW(4)'
-            if G == 1:
-                key = key + 'G(1)'
-            elif G == 2:
-                key = key + 'G(2)'
-            elif G == 3:
-                key = key + 'G(3)'
-            elif G == 4:
-                key = key + 'G(4)'
-            return table[key]
 
-        def fES(DW, A, R, ES):
+
+        def fES(DW, A, R, SD, ES):
             '''Eco-environmental sensitivity'''
             table = self.dic['ES']['ES']
             key = ''
@@ -179,10 +165,18 @@ class BN_CreateFactors:
                 key = key + 'R(3)'
             elif R == 4:
                 key = key + 'R(4)'
+            if SD == 1:
+                key = key + 'SD(1)'
+            elif SD == 2:
+                key = key + 'SD(2)'
+            elif SD == 3:
+                key = key + 'SD(3)'
+            elif SD == 4:
+                key = key + 'SD(4)'
 
             return table[key]
 
-        def fIE(IW, DNR, IE):
+        def fIE(DNR, G, IW, IE):
             '''Importance of ecosystem services'''
             table = self.dic['IE']['IE']
             key = ''
@@ -202,6 +196,14 @@ class BN_CreateFactors:
                 key = key + 'DNR(3)'
             elif DNR == 4:
                 key = key + 'DNR(4)'
+            if G == 1:
+                key = key + 'G(1)'
+            elif G == 2:
+                key = key + 'G(2)'
+            elif G == 3:
+                key = key + 'G(3)'
+            elif G == 4:
+                key = key + 'G(4)'
             if IW == 1:
                 key = key + 'IW(1)'
             elif IW == 2:
@@ -210,16 +212,17 @@ class BN_CreateFactors:
                 key = key + 'IW(3)'
             elif IW == 4:
                 key = key + 'IW(4)'
+
             return table[key]
 
-        def fUE(DRW, DT, DRD, UE):
+        def fLC(DRW, DT, DRD, LC):
             '''Urban encroachment'''
-            table = self.dic['UE']['UE']
+            table = self.dic['LC']['LC']
             key = ''
-            if UE == 1:
-                key = key + 'UE(1)'
-            elif UE == 2:
-                key = key + 'UE(2)'
+            if LC == 1:
+                key = key + 'LC(1)'
+            elif LC == 2:
+                key = key + 'LC(2)'
 
             if DRD == 1:
                 key = key + 'DRD(1)'
@@ -248,25 +251,33 @@ class BN_CreateFactors:
 
             return table[key]
 
-        def fLOP(FO, UE, LOP):
+        def fC(G, DW, C):
             '''Ecological land potential'''
-            table = self.dic['LOP']['LOP']
+            table = self.dic['C']['C']
             key = ''
-            if LOP == 1:
-                key = key + 'LOP(1)'
-            elif LOP == 2:
-                key = key + 'LOP(2)'
-            if FO == 1:
-                key = key + 'FO(1)'
-            elif FO == 2:
-                key = key + 'FO(2)'
-            if UE == 1:
-                key = key + 'UE(1)'
-            elif UE == 2:
-                key = key + 'UE(2)'
+            if C == 1:
+                key = key + 'C(1)'
+            elif C == 2:
+                key = key + 'C(2)'
+            if DW == 1:
+                key = key + 'DW(1)'
+            elif DW == 2:
+                key = key + 'DW(2)'
+            elif DW == 3:
+                key = key + 'DW(3)'
+            elif DW == 4:
+                key = key + 'DW(4)'
+            if G == 1:
+                key = key + 'G(1)'
+            elif G == 2:
+                key = key + 'G(2)'
+            elif G == 3:
+                key = key + 'G(3)'
+            elif G == 4:
+                key = key + 'G(4)'
             return table[key]
 
-        def fELP(ES, IE, LOP, ELP):
+        def fELP(ES, IE, LC, C,  ELP):
             '''Land occupation  potential'''
             table = self.dic['ELP']['ELP']
             key = ''
@@ -274,6 +285,10 @@ class BN_CreateFactors:
                 key = key + 'ELP(1)'
             elif ELP == 2:
                 key = key + 'ELP(2)'
+            if C == 1:
+                key = key + 'C(1)'
+            elif C == 2:
+                key = key + 'C(2)'
             if ES == 1:
                 key = key + 'ES(1)'
             elif ES == 2:
@@ -290,13 +305,14 @@ class BN_CreateFactors:
                 key = key + 'IE(3)'
             elif IE == 4:
                 key = key + 'IE(4)'
-            if LOP == 1:
-                key = key + 'LOP(1)'
-            elif LOP == 2:
-                key = key + 'LOP(2)'
+            if LC == 1:
+                key = key + 'LC(1)'
+            elif LC == 2:
+                key = key + 'LC(2)'
+
             return table[key]
 
-        g = build_bbn(fDRW, fDT, fDRD, fG, fDW, fUE, fFO, fLOP, fDW, fA, fR, fES, fIW, fDNR, fIE, fELP,
+        g = build_bbn(fDRW, fDT, fDRD, fG, fDW, fSD, fLC, fC, fDW, fA, fR, fES, fIW, fDNR, fIE, fELP,
                       domains={'G': [1, 2, 3, 4],
                                'DW': [1, 2, 3, 4],
                                'A': [1, 2, 3, 4],
@@ -306,10 +322,10 @@ class BN_CreateFactors:
                                'DRW': [1, 2, 3, 4],
                                'DT': [1, 2, 3, 4],
                                'DRD': [1, 2, 3, 4],
-                               'FO': [1, 2],
+                               'SD':[1,2,3,4],
+                               'LC': [1, 2],
+                               'C': [1,2],
                                'ES': [1, 2, 3, 4],
                                'IE': [1, 2, 3, 4],
-                               'UE': [1, 2],
-                               'LOP': [1, 2],
                                'ELP': [1, 2]})
         return g

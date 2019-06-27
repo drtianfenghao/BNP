@@ -15,21 +15,19 @@ def createlst(inputfeature,outworkspace):
 
     '''
     lstobj = []
-    with arcpy.da.SearchCursor(inputfeature, "OBJ") as cursor:
+    with arcpy.da.SearchCursor(inputfeature, "OID") as cursor:
         for row in cursor:
             lstobj.append(row[0])
     cnt = len(lstobj)
-    n = cnt/10000
-    sy = cnt - n*10000
+    n = cnt/5000
+
     for i in range(n):
-        arcpy.Select_analysis(inputfeature,outworkspace+'//'+'trdata_%s'%str(i),'OBJ<%d AND OBJ>%d'%(((i+1)*10000)+1,i*10000))
-        arcpy.Select_analysis(inputfeature,outworkspace + '//' + 'yzdata_%s' % str(i),'Not(OBJ<%d AND OBJ>%d)' % (((i + 1) * 10000)+1, i * 10000))
+        arcpy.Select_analysis(inputfeature,outworkspace+'//'+'trdata_%s'%str(i),'OID<%d AND OID>%d'%(((i+1)*5000)+1,i*5000))
+        arcpy.Select_analysis(inputfeature,outworkspace + '//' + 'yzdata_%s' % str(i),'Not(OID<%d AND OID>%d)' % (((i + 1) * 5000)+1, i * 5000))
 
         arcpy.AddMessage('Finnishing covert :'+str(i))
 
-    arcpy.Select_analysis(inputfeature, outworkspace + '//' + 'trdata_%s' % str(sy),'OBJ>%d' % (n * 10000))
-    arcpy.Select_analysis(inputfeature, outworkspace + '//' + 'yzdata_%s' % str(sy),'Not(OBJ>%d)' % (n * 10000))
-    arcpy.AddMessage('Finishing covert :'+str(sy))
+
 
 
 input = arcpy.GetParameterAsText(0)

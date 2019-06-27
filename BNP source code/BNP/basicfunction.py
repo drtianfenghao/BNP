@@ -32,7 +32,7 @@ class basicfunction:
 
         dic = {}
         lstfield = self.InputField.split(";")
-        print lstfield
+
         num = len(lstfield)
 
         for i in range(num):
